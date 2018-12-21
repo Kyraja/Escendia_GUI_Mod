@@ -196,6 +196,7 @@ public class EscendiaGui extends GuiScreen implements IGuiHandler {
                 }
             }
         }
+        elementList.put(searchElement, element);
         return false;
     }
 }
