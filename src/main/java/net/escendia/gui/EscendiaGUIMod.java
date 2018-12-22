@@ -13,6 +13,7 @@ import net.escendia.ioc.Inject;
 import net.escendia.ioc.InversionOfControl;
 import net.escendia.ioc.Singleton;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
