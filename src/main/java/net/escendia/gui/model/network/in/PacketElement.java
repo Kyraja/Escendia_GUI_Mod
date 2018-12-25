@@ -25,7 +25,6 @@ public abstract class PacketElement extends PacketIn{
             Element element = new Element().fromJson(jsonObject.getAsJsonObject(GlobalScope.ELEMENT).toString());
             guiService.getCurrentGUI().addElement(element);
             packetService.sendPacket(new net.escendia.gui.model.network.out.PacketElement.Added(element));
-            logger.debug("Added element " + element.getElementUUID() + " | " + element.getForm().getClass());
         }
     }
 
@@ -38,8 +37,6 @@ public abstract class PacketElement extends PacketIn{
             Element element = new Element().fromJson(jsonObject.getAsJsonObject(GlobalScope.ELEMENT).toString());
             guiService.getCurrentGUI().remove(element);
             packetService.sendPacket(new net.escendia.gui.model.network.out.PacketElement.Added(element));
-            logger.debug("Remove element " + element.getElementUUID() + " | " + element.getForm().getClass());
-
         }
     }
 
@@ -50,7 +47,6 @@ public abstract class PacketElement extends PacketIn{
               Element element = new Element().fromJson(jsonObject.getAsJsonObject(GlobalScope.ELEMENT).toString());
               InversionOfControl.get().build(GUIService.class).getCurrentGUI().updateElement(element);
               InversionOfControl.get().build(PacketService.class).sendPacket(new net.escendia.gui.model.network.out.PacketElement.Updated(element));
-                logger.debug("Updated element " + element.getElementUUID() + " | " + element.getForm().getClass());
         }
     }
 }

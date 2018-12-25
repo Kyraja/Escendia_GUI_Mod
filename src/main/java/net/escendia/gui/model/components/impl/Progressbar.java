@@ -62,9 +62,6 @@ public class Progressbar extends ElementValuable<Double> {
 
         @Override
         public void draw() {
-            InversionOfControl.get().build(EscendiaLogger.class).info("getWidth: " + getProgressForm().getFormStyle().getWidth());
-            InversionOfControl.get().build(EscendiaLogger.class).info("getWidth: " + getBarPercentage());
-
             super.draw();
             getProgressForm().draw();
         }
@@ -90,14 +87,7 @@ public class Progressbar extends ElementValuable<Double> {
 
         @Override
         public void draw() {
-
-            InversionOfControl.get().build(EscendiaLogger.class).info("getFormClass: " + progressForm.getFormClass());
-
-            InversionOfControl.get().build(EscendiaLogger.class).info("getHeight: " + getProgressForm().getFormStyle().getHeight());
-            InversionOfControl.get().build(EscendiaLogger.class).info("getBarPercentage: " + getBarPercentage());
             super.draw();
-            InversionOfControl.get().build(EscendiaLogger.class).info("super.draw(): ");
-
             getProgressForm().draw();
         }
     }

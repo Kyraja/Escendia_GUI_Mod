@@ -1,5 +1,6 @@
 package net.escendia.gui.controll;
 
+import net.escendia.gui.model.GlobalScope;
 import net.escendia.gui.model.images.*;
 import net.escendia.gui.model.logger.EscendiaLogger;
 import net.escendia.ioc.InversionOfControl;

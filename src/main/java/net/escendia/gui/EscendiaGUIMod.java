@@ -35,6 +35,7 @@ public class EscendiaGUIMod {
 
     @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
+
         InversionOfControl.get().registerInterfaceImplementation(FileService.class, new FileService());
 
         this.logger = new EscendiaLogger("Escendia GUI Mod", Level.TRACE);

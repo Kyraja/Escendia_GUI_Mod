@@ -607,7 +607,6 @@ public class Text extends ElementValuable<String> {
 
         for(int i = 0; i < textLines.size(); i++) {
             TextLine textLine = textLines.get(i);
-            InversionOfControl.get().build(EscendiaLogger.class).info("draw()-Text: " + textLine.getLineText() + " " + (yPos + stringHeight * i) + " "+ stringHeight + " " + (xPos +  textLine.getxOffset()) + " " + textLine.getxOffset());
             font.drawString(textLine.getLineText(), yPos + stringHeight * i , xPos +  textLine.getxOffset(), formStyle.getFontScale(), fontColor);
         }
     }

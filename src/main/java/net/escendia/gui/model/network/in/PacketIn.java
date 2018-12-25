@@ -7,11 +7,9 @@ import net.escendia.ioc.InversionOfControl;
 public abstract class PacketIn {
 
     protected final JsonObject jsonObject;
-    protected final EscendiaLogger logger;
 
     public PacketIn(JsonObject jsonObject){
         this.jsonObject = jsonObject;
-        logger = InversionOfControl.get().build(EscendiaLogger.class);
     }
 
 }

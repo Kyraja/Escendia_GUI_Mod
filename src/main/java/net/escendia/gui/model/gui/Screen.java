@@ -46,8 +46,5 @@ public class Screen {
         this.width = width;
         this.height = height;
         this.scaleFactor = scaleFactor;
-        InversionOfControl.get().build(EscendiaLogger.class).info("setScreen() - width: " + width);
-        InversionOfControl.get().build(EscendiaLogger.class).info("setScreen() -height: " + height);
-        InversionOfControl.get().build(EscendiaLogger.class).info("setScreen() - scaleFactor: " + scaleFactor);
     }
 }

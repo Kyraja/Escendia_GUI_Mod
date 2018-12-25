@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * EscendiaGui the open a gui to work with
@@ -19,7 +20,7 @@ public class EscendiaGui extends GuiScreen implements IGuiHandler {
     private final UUID guiUUID;
     private final Object escendiaguimod;
     private boolean status;
-    private HashMap<UUID, Element> elementList = new HashMap<>();
+    private ConcurrentHashMap<UUID, Element> elementList;
     private boolean interactMode;
     private Element hoveredElement;
     private Element focusedElement;
@@ -31,7 +32,7 @@ public class EscendiaGui extends GuiScreen implements IGuiHandler {
         this.guiUUID =  UUID.fromString("00000000-0000-0000-0000-000000000000");
         this.status = false;
         this.interactMode = false;
-        this.elementList = new HashMap<>();
+        this.elementList = new ConcurrentHashMap<>();
     }
 
 
@@ -68,7 +69,7 @@ public class EscendiaGui extends GuiScreen implements IGuiHandler {
         super.onGuiClosed();
     }
 
-    public HashMap<UUID, Element> getElementList() {
+    public ConcurrentHashMap<UUID, Element> getElementList() {
         return elementList;
     }
 
@@ -180,23 +181,16 @@ public class EscendiaGui extends GuiScreen implements IGuiHandler {
      * @param element
      * @return
      */
-    public boolean updateElement(Element element) {
+    public void updateElement(Element element) {
         UUID searchElement = element.getElementUUID();
 
         for(UUID elementUUID : elementList.keySet()){
-            if(elementUUID == searchElement) {
+            if(elementUUID.equals(searchElement)) {
                 elementList.remove(elementUUID);
                 elementList.put(searchElement, element);
-                return true;
             }else{
-                Element childElement = elementList.get(elementUUID).getChildrenElement(elementUUID);
-                if(childElement!=null){
-                    elementList.get(elementUUID).removeChildrenElement(childElement);
-                    return true;
-                }
+                elementList.get(elementUUID).updateChildrenElement(element);
             }
         }
-        elementList.put(searchElement, element);
-        return false;
     }
 }

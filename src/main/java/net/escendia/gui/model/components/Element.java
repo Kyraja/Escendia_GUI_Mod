@@ -146,6 +146,26 @@ public class Element implements FactoryElement<Element> {
         });
     }
 
+    /**
+     * Remove old Element and adds the new one
+     * Is called from the {@link net.escendia.gui.model.network.in.PacketElement} (Update)
+     * It wont Trigger the "RemoveListener"
+     * @param element
+     * @return
+     */
+    public void updateChildrenElement(Element element) {
+        UUID searchElement = element.getElementUUID();
+
+        for(UUID elementUUID : childrenElements.keySet()){
+            if(elementUUID.equals(searchElement)) {
+                childrenElements.remove(elementUUID);
+                childrenElements.put(searchElement, element);
+                return;
+            }else{
+                childrenElements.get(elementUUID).updateChildrenElement(element);
+            }
+        }
+    }
 
     /**
      * Removes a child Element
@@ -380,10 +400,6 @@ public class Element implements FactoryElement<Element> {
 
     public void draw(){
         if(getVisibility()==Visibility.VISIBLE){
-//            InversionOfControl.get().build(EscendiaLogger.class).debug("element() " + elementUUID + " | " + this.getClass());
-//            InversionOfControl.get().build(EscendiaLogger.class).debug("draw() " + elementUUID + " | " + form.getClass());
-//            InversionOfControl.get().build(EscendiaLogger.class).debug("formstyle() " + elementUUID + " | " + form.getFormStyle().toJson());
-
             form.draw();
             for(Element element : getChildrenElements().values()){
                 element.draw();

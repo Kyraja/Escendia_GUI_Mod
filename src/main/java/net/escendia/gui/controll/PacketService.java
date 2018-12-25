@@ -76,6 +76,7 @@ public class PacketService{
                 case GlobalScope.PACKET_SERVER_CONNECTION_CLOSE: new PacketConnection.Close(content);break;
                 case GlobalScope.PACKET_SERVER_GUI_CREATE: new PacketGUI.Create(content);break;
                 case GlobalScope.PACKET_SERVER_GUI_DELETE: new PacketGUI.Delete(content);break;
+                case GlobalScope.PACKET_SERVER_GUI_ADDIMAGE: new PacketGUI.AddImage(content);break;
                 case GlobalScope.PACKET_SERVER_COMPONENT_ADD: new PacketElement.Add(content);break;
                 case GlobalScope.PACKET_SERVER_COMPONENT_REMOVE: new PacketElement.Remove(content);break;
                 case GlobalScope.PACKET_SERVER_COMPONENT_UPDATE: new PacketElement.Update(content);break;
