@@ -2,9 +2,14 @@ package net.escendia.gui.model.factories;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Constructor;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 class ModelFactoryTest {
 
@@ -300,28 +305,89 @@ class ModelFactoryTest {
     @Test
     void getFormByClass() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
+//        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+//        ScriptEngine engine = scriptEngineManager.getEngineByName("nashorn");
+//
+//        try{
+//            String output = "";
+//            EscendiaClassBase escendiaPlayer = new EscendiaClassBase();
+//            escendiaPlayer.setClass_Id("test");
+////            engine.eval(
+////                    "function skillFunction(targetEntity) {" +
+////                    "name = targetEntity.getClass_Id();" +
+////
+////                    "var EscendiaClassBase = Java.type(\"net.escendia.coreplugin.classsystem.EscendiaClassBase)\"," +
+////                            "escendiaClass = new EscendiaClassBase()," +
+////                    "return escendiaClass;" +
+////                    "}");
+//
+//            engine.eval(
+//                          "var World = Java.type('org.spongepowered.api.world.World');"+
+//                    "var HealEffect = Java.type('net.escendia.coreplugin.utility.effects.impl.HealEffect');"+
+//                    "function skillFunction(targetEntity) {" +
+//                            "var effect = new HealEffect();" +
+//                            "effect.setDelay(1);"+
+//                            "return effect;"+
+//                    "}");
+//
+//            Invocable invocable = (Invocable)engine;
+//            Object name = invocable.invokeFunction("skillFunction", escendiaPlayer);
+//            if(name!=null){
+//                String returName = (String)name;
+//                System.out.println(returName);
+//
+//            }
+//        }catch(Exception ex){
+//            System.out.println(ex);
+//        }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//        String path = "C:\\Users\\FPetersen\\Desktop\\SpongeWorlds\\Sponge 1.12.2-14.23.4.2705\\config\\escendiacoreplugin\\escendiaclass\\skills\\class_darkKnight";
+//        String className = "RegenerationSkill";
+//        String pathToPackageBase = "";
+//        try {
+//
+//            Class clss = new URLClassLoader(
+//                    new URL[]{new File(path).toURI().toURL()}
+//            ).loadClass(className);
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
 
-        ClassLoader classLoader = this.getClass().getClassLoader();
+//        ClassLoader classLoader = this.getClass().getClassLoader();
+//
+//        Class loadedMyClass = classLoader.loadClass("com.jcg.MyClass");
+//
+//        System.out.println("Loaded class name: " + loadedMyClass.getName());
+//
+//        // Create a new instance from the loaded class
+//
+//        Constructor constructor = loadedMyClass.getConstructor();
+//
+//        Object myClassObject = constructor.newInstance();
+//
+//
+//
+//        // Getting the target method from the loaded class and invoke it using its name
+//
+//        Method method = loadedMyClass.getMethod("sayHello1");
+//
+//        System.out.println("Invoked method name: " + method.getName());
 
-        Class loadedMyClass = classLoader.loadClass("com.jcg.MyClass");
-
-        System.out.println("Loaded class name: " + loadedMyClass.getName());
-
-        // Create a new instance from the loaded class
-
-        Constructor constructor = loadedMyClass.getConstructor();
-
-        Object myClassObject = constructor.newInstance();
-
-
-
-        // Getting the target method from the loaded class and invoke it using its name
-
-        Method method = loadedMyClass.getMethod("sayHello1");
-
-        System.out.println("Invoked method name: " + method.getName());
-
-        method.invoke(myClassObject);
+//        method.invoke(myClassObject);
 //        String className = "mypackage.MyClass";
 //        String javaCode = "package mypackage;\n" +
 //                "public class MyClass implements Runnable {\n" +
