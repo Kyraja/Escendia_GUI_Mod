@@ -89,6 +89,8 @@ public class GlobalScope {
     public static final String INITDATA = "initdata";
     public static final String IMAGE = "image";
     public static final String IMAGE_NAME = "imagename";
+    public static final String IMAGE_URL = "imageurl";
+
     public static final String FONT = "font";
 
     public static final String BUTTON = "button";

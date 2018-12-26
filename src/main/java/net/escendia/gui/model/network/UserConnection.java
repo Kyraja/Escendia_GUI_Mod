@@ -52,6 +52,7 @@ public class UserConnection extends Thread {
 
             while(true){
                 String message = in.readLine();
+                logger.info("run() - message: " + message);
                 JsonObject jsonObject = parser.parse(message).getAsJsonObject();
 
                 InversionOfControl.get().build(PacketService.class).receivePacket(jsonObject);

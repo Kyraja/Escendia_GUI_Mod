@@ -46,35 +46,26 @@ public class ImageService extends FileService {
 
     public void generateImages(){
         for(ImageData imageData : imagesData) {
-            if (imageData.getExtension().endsWith("jpg")) {
-                try {
+            try{
+                if (imageData.getExtension().endsWith("jpg")) {
                     Texture texture = TextureLoader.getTexture("JPG", new ByteArrayInputStream(imageData.frames.get(0).bytes));
                     addImage(imageData.getName(), new StaticImage(texture));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (imageData.getExtension().endsWith("png")) {
-                try {
+                } else if (imageData.getExtension().endsWith("png")) {
                     Texture texture = TextureLoader.getTexture("PNG", new ByteArrayInputStream(imageData.frames.get(0).bytes));
                     addImage(imageData.getName(), new StaticImage(texture));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } else if (imageData.getExtension().endsWith("gif")) {
+                        AnimatedImage gifImage = new AnimatedImage();
+
+                        for (int i = 0; i < imageData.frames.size(); i++) {
+                            ImageData.Frame frame = imageData.frames.get(i);
+
+                            Texture texture = TextureLoader.getTexture("GIF", new ByteArrayInputStream(frame.bytes));
+                            gifImage.addFrame(new Frame(frame.time, texture));
+                        }
+                        addImage(imageData.getName(), gifImage);
                 }
-            } else if (imageData.getExtension().endsWith("gif")) {
-                try {
-                    AnimatedImage gifImage = new AnimatedImage();
-
-                    for (int i = 0; i < imageData.frames.size(); i++) {
-                        ImageData.Frame frame = imageData.frames.get(i);
-
-                        Texture texture = TextureLoader.getTexture("GIF", new ByteArrayInputStream(frame.bytes));
-                        gifImage.addFrame(new Frame(frame.time, texture));
-                    }
-
-                    addImage(imageData.getName(), gifImage);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+            }catch(Exception ex){
+                logger.info(ex.getMessage());
             }
         }
         logger.debug("generateImages() " + images);
@@ -83,8 +74,6 @@ public class ImageService extends FileService {
 
     public void downloadImage(final String imageUrl, final String name){
         if(!urlLoaded.contains(imageUrl)) {
-                    String extension = name.substring(name.lastIndexOf(".") + 1);
-
                     try {
                         InputStream is = getFile(imageUrl);
 
@@ -95,33 +84,8 @@ public class ImageService extends FileService {
                         while ((b = is.read()) != -1)
                             baos.write(b);
 
-                        if (extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png")) {
-                            ImageData imageData = new ImageData(extension, name);
-                            imageData.frames.add(new ImageData.Frame(0, baos.toByteArray()));
+                        convertImage(name, baos.toByteArray());
 
-                            InversionOfControl.get().build(ImageService.class).addImageData(imageData);
-
-                        } else if (extension.equalsIgnoreCase("gif")) {
-                            try {
-                                ImageData imageData = new ImageData(extension, name);
-                                GifDecoder.GifImage gifImage = GifDecoder.read(baos.toByteArray());
-
-                                for (b = 0; b < gifImage.getFrameCount(); b++) {
-                                    BufferedImage bufferedImage = gifImage.getFrame(b);
-
-                                    ByteArrayOutputStream baosImage = new ByteArrayOutputStream();
-                                    ImageIO.write(bufferedImage, "GIF", baosImage);
-
-                                    imageData.frames.add(new ImageData.Frame(gifImage.getDelay(b) * 10, baosImage.toByteArray()));
-
-                                    baosImage.close();
-                                }
-
-                                InversionOfControl.get().build(ImageService.class).addImageData(imageData);
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        }
 
                         baos.close();
                     } catch (Exception ex) {
@@ -130,6 +94,40 @@ public class ImageService extends FileService {
                     InversionOfControl.get().build(EscendiaLogger.class).info("Image " + name + " from " + imageUrl + " downloaded...");
                     urlLoaded.add(imageUrl);
                 }
+    }
+
+    public void convertImage(String filename, byte[] bytes){
+        String extension = "jpg";
+
+        if(filename.contains("."))extension = filename.substring(filename.lastIndexOf(".") + 1);
+
+        if (extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png")) {
+            ImageData imageData = new ImageData(extension, filename);
+            imageData.frames.add(new ImageData.Frame(0, bytes));
+
+            InversionOfControl.get().build(ImageService.class).addImageData(imageData);
+
+        } else if (extension.equalsIgnoreCase("gif")) {
+            try {
+                ImageData imageData = new ImageData(extension, filename);
+                GifDecoder.GifImage gifImage = GifDecoder.read(bytes);
+
+                for (int b = 0; b < gifImage.getFrameCount(); b++) {
+                    BufferedImage bufferedImage = gifImage.getFrame(b);
+
+                    ByteArrayOutputStream baosImage = new ByteArrayOutputStream();
+                    ImageIO.write(bufferedImage, "GIF", baosImage);
+
+                    imageData.frames.add(new ImageData.Frame(gifImage.getDelay(b) * 10, baosImage.toByteArray()));
+
+                    baosImage.close();
+                }
+
+                InversionOfControl.get().build(ImageService.class).addImageData(imageData);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     private static class ImageData{

@@ -10,6 +10,9 @@ import net.escendia.gui.model.images.Image;
 import net.escendia.gui.view.EscendiaGui;
 import net.escendia.ioc.InversionOfControl;
 
+import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
+
 public class PacketGUI extends PacketIn {
 
     public PacketGUI(JsonObject jsonObject) {
@@ -43,12 +46,15 @@ public class PacketGUI extends PacketIn {
 
         public AddImage(JsonObject jsonObject) {
             super(jsonObject);
-            EscendiaGui escendiaGui = InversionOfControl.get().build(GUIService.class).getCurrentGUI();
-            if(escendiaGui!=null){
                 String imageName = jsonObject.get(GlobalScope.IMAGE_NAME).getAsString();
-                Image image = new Image().fromJson(jsonObject.getAsJsonObject(GlobalScope.IMAGE).toString());
-                InversionOfControl.get().build(ImageService.class).addImage(imageName, image);
-            }
+                if(jsonObject.get(GlobalScope.IMAGE)!=null){
+                    byte[] imageData = DatatypeConverter.parseBase64Binary(jsonObject.get(GlobalScope.IMAGE).getAsString());
+                    InversionOfControl.get().build(ImageService.class).convertImage(imageName, imageData);
+                }
+                if(jsonObject.get(GlobalScope.IMAGE_URL)!=null){
+                    String imageUrl = jsonObject.get(GlobalScope.IMAGE_URL).getAsString();
+                    InversionOfControl.get().build(ImageService.class).downloadImage(imageUrl, imageName);
+                }
         }
     }
 

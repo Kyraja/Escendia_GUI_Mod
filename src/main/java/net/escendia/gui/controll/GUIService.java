@@ -82,7 +82,7 @@ public class GUIService {
         for(Map.Entry pairs : generalGUIData.getImages().entrySet())
             imageRepository.downloadImage((String) pairs.getValue(),(String) pairs.getKey());
 
-        imageRepository.generateImages();
+        if(generalGUIData.getImages().size()>=0)imageRepository.generateImages();
     }
 
 
