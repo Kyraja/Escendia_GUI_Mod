@@ -593,6 +593,7 @@ public class Text extends ElementValuable<String> {
 
     @Override
     public void draw() {
+        //InversionOfControl.get().build(EscendiaLogger.class).info("Draw() - " + getElementUUID() + " " + getText());
         super.draw();
 
         FormStyle formStyle = getForm().getFormStyle();

@@ -1,6 +1,8 @@
 package net.escendia.gui.view;
 
 import net.escendia.gui.model.components.Element;
+import net.escendia.gui.model.logger.EscendiaLogger;
+import net.escendia.ioc.InversionOfControl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -165,7 +167,7 @@ public class EscendiaGui extends GuiScreen implements IGuiHandler {
     public Element getElement(UUID elementUUID) {
 
         for(UUID element : elementList.keySet()){
-            if(element == elementUUID){
+            if(element.toString().equalsIgnoreCase(elementUUID.toString())){
                 return elementList.get(element);
             }else{
                 Element childElement = elementList.get(element).getChildrenElement(elementUUID);
@@ -185,7 +187,7 @@ public class EscendiaGui extends GuiScreen implements IGuiHandler {
         UUID searchElement = element.getElementUUID();
 
         for(UUID elementUUID : elementList.keySet()){
-            if(elementUUID.equals(searchElement)) {
+            if(elementUUID.toString().equalsIgnoreCase(searchElement.toString())) {
                 elementList.remove(elementUUID);
                 elementList.put(searchElement, element);
             }else{

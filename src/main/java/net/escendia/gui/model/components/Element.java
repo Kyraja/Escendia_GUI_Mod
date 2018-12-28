@@ -157,7 +157,7 @@ public class Element implements FactoryElement<Element> {
         UUID searchElement = element.getElementUUID();
 
         for(UUID elementUUID : childrenElements.keySet()){
-            if(elementUUID.equals(searchElement)) {
+            if(elementUUID.toString().equalsIgnoreCase(searchElement.toString())) {
                 childrenElements.remove(elementUUID);
                 childrenElements.put(searchElement, element);
                 return;
@@ -410,7 +410,7 @@ public class Element implements FactoryElement<Element> {
 
     @Override
     public JsonElement toJson() {
-        return new GsonBuilder()
+        return new GsonBuilder().serializeSpecialFloatingPointValues()
                 .create().toJsonTree(this);
     }
 

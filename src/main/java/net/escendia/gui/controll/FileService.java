@@ -4,6 +4,9 @@ import net.escendia.ioc.Singleton;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -95,10 +98,35 @@ public class FileService {
     }
 
     public ByteArrayInputStream downloadFileByUrl(String fileUrl) throws Exception {
-        URL url = new URL(fileUrl);
-        URLConnection urlConnection = url.openConnection();
-        InputStream is = url.openStream();
-        OutputStream os = new ByteArrayOutputStream(urlConnection.getContentLength());
+        // Create a new trust manager that trust all certificates
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return null;
+                        }
+                        public void checkClientTrusted(
+                                java.security.cert.X509Certificate[] certs, String authType) {
+                        }
+                        public void checkServerTrusted(
+                                java.security.cert.X509Certificate[] certs, String authType) {
+                        }
+                    }
+            };
+
+    // Activate the new trust manager
+            try {
+                SSLContext sc = SSLContext.getInstance("SSL");
+                sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            } catch (Exception e) {
+            }
+
+    // And as before now you can use URL and URLConnection
+            URL url = new URL(fileUrl);
+            URLConnection connection = url.openConnection();
+            InputStream is = connection.getInputStream();
+    // .. then download the file
+        OutputStream os = new ByteArrayOutputStream();
 
         byte[] b = new byte[2048];
         int length;

@@ -140,7 +140,6 @@ public class GUIService {
         //Need to register the gui if the gui is set
         NetworkRegistry.INSTANCE.registerGuiHandler(InversionOfControl.get().build(EscendiaGUIMod.class).mod, currentGUI);
         this.currentGUI = currentGUI;
-        //currentGUI.openGUI();
     }
 
     /**
